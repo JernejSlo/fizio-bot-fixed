@@ -9,7 +9,7 @@ const ChatContainer = styled.button`
   padding: 5px 20px;
   align-items: center;
   border-radius: 8px;
-  background-color: ${props => props.isSelected ? '#f6f6f6' : (props.isHovering ? '#f6f6f6' : '#fff')};
+  background-color: ${props => props.isSelected ? '#f6f6f6' : (props.isHovering ? '#f6f6f6' : 'transparent')};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border: none;

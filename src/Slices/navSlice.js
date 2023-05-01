@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    user: null,
+    user: {"username": "jernej", "photo": "/FizioBot.png"},
     chats: [
         {"title": "First Chat","chatID": 1},
         {"title": "Chat example","chatID": 2},

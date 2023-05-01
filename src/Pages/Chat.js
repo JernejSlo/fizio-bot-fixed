@@ -4,11 +4,11 @@ import CurrentChat from "../Components/CurrentChat";
 
 export default function Chat() {
     return (
-        <div style={{ height: "100vh", backgroundColor: "#F0F2F5"}}>
+        <div style={{ height: "100vh", backgroundColor: "#0c1b30"}}>
             <Header />
             <div
                 style={{
-                    backgroundColor: "#F0F2F5",
+                    backgroundColor: "#0c1b30",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",

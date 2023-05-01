@@ -63,7 +63,8 @@ export default function ChatHistory() {
     const updatedChats = getChat(chats, selectedChatID);
 
     return (
-        <div>
+        <div style={{
+        }}>
             <ChatHistoryTitle>POGOVORI</ChatHistoryTitle>
             <ChatHistoryWrapper>
                 {updatedChats.map(chat => (
