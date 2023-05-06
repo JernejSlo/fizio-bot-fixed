@@ -3,29 +3,40 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     user: {"username": "jernej", "photo": "/FizioBot.png"},
     chats: [
-        {"title": "First Chat","chatID": 1},
-        {"title": "Chat example","chatID": 2},
-        {"title": "Chat example","chatID": 3},
-        {"title": "Chat example","chatID": 4},
-        {"title": "Chat example","chatID": 5},
-        {"title": "Chat example","chatID": 6},
-        {"title": "Chat example","chatID": 7},
-        {"title": "Chat example","chatID": 8},
-        {"title": "Chat example","chatID": 9},
-        {"title": "Chat example","chatID": 10},
-        {"title": "Chat example","chatID": 11},
-        {"title": "Chat example","chatID": 12},
-        {"title": "Chat example","chatID": 13},
-        {"title": "Chat example","chatID": 14},
-        {"title": "Chat example","chatID": 15},
-        {"title": "Chat example","chatID": 16},
+        {"title": "First Chat","chatID": 1, "diagnosis": "Tight quad"},
+        {"title": "Chat example","chatID": 2, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 3, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 4, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 5, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 6, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 7, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 8, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 9, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 10, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 11, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 12, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 13, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 14, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 15, "diagnosis": "Tight hip abductor"},
+        {"title": "Chat example","chatID": 16, "diagnosis": "Tight hip abductor"},
     ],
     current_chat: {
         "chatID": 1,
         "chats": [
             {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"}
-        ]
+            {"sender": "User","content": "Hi Fizio!"},{"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
+            {"sender": "User","content": "Hi Fizio!"},
+            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
+            {"sender": "User","content": "Hi Fizio!"},
+            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
+            {"sender": "User","content": "Hi Fizio!"},
+            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
+            {"sender": "User","content": "Hi Fizio!"},
+            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
+            {"sender": "User","content": "Hi Fizio!"},
+
+        ],
+        "diagnosis": "Tight quad"
     },
 }
 

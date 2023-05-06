@@ -2,6 +2,13 @@ import Header from "../Components/Header";
 import ChatHistory from "../Components/ChatHistory";
 import CurrentChat from "../Components/CurrentChat";
 
+import * as tf from "@tensorflow/tfjs"
+
+
+function queryCurrentChat(diagnosis){
+
+}
+
 export default function Chat() {
     return (
         <div style={{ height: "100vh", backgroundColor: "#0c1b30"}}>
@@ -26,7 +33,7 @@ export default function Chat() {
                     }}
                 >
                     <div style={{ width: "20%", padding: "0px 0px"}}>
-                        <ChatHistory/>
+                        <ChatHistory additionalFunction={queryCurrentChat}/>
                     </div>
                     <div style={{ width: "80%", padding: "0px 30px" }}>
                            <CurrentChat/>

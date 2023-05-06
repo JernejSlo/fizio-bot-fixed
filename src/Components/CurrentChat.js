@@ -14,9 +14,26 @@ const ChatWrapper = styled.div`
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
+  padding: 14px;
+  overflow-y: hidden;
+  &:hover {
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+  }
+  
 `;
 
 const ChatBubble = styled.div`
@@ -32,12 +49,6 @@ const ChatMessage = styled.div`
   border-radius: 10px;
   background-color: ${(props) => (props.isSender ? '#03a9f4' : '#f5f5f5')};
   color: ${(props) => (props.isSender ? '#fff' : '#333')};
-`;
-
-const ChatSender = styled.div`
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 5px;
 `;
 
 const CurrentChat = () => {

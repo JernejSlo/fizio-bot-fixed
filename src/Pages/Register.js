@@ -1,8 +1,8 @@
 import Header from "../Components/Header"
-
+import {AppWrapper} from "../Components/Constants"
 export default function Register() {
     return (
-        <div>
+        <AppWrapper>
             <Header />
             <div style={{ backgroundColor: '#F0F2F5', height: 'calc(100vh - 60px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <div style={{ backgroundColor: '#fff', maxWidth: '300px', width: '90%', padding: '30px', borderRadius: '5px', boxShadow: '0px 2px 10px rgba(0,0,0,0.2)' }}>
@@ -26,6 +26,6 @@ export default function Register() {
                     </form>
                 </div>
             </div>
-        </div>
+        </AppWrapper>
     );
 }

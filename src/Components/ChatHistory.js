@@ -7,9 +7,8 @@ import Chat from "../Components/Chat";
 const ChatHistoryWrapper = styled.div`
   height: 65vh;
   padding-right: 10px;
-  overflow-y: hidden;
   border-radius: 8px;
-
+  overflow-y: hidden;
   &:hover {
     overflow-y: auto;
   }
@@ -52,12 +51,13 @@ function getChat(chats, chatID) {
     return updatedChats;
 }
 
-export default function ChatHistory() {
+const ChatHistory = ({additionalFunction, setDiagnosis}) => {
     const chats = useSelector(selectChats);
     const [selectedChatID, setSelectedChatID] = useState(null);
 
-    const handleChatClick = chatID => {
+    function handleChatClick(chatD,chatID,setDiagnosis){
         setSelectedChatID(chatID);
+        additionalFunction(chatD);
     };
 
     const updatedChats = getChat(chats, selectedChatID);
@@ -72,10 +72,12 @@ export default function ChatHistory() {
                         title={chat.title}
                         selected={chat.selected}
                         key={chat.chatID}
-                        onClick={() => handleChatClick(chat.chatID)}
+                        onClick={() => handleChatClick(chat.diagnosis,chat.chatID,setDiagnosis)}
                     />
                 ))}
             </ChatHistoryWrapper>
         </div>
     );
 }
+
+export default ChatHistory;

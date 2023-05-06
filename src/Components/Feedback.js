@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
 const FeedbackWrapper = styled.div`
-  width: 100%;
+  margin: 0 25%;
+  align-self: center;
+  border-radius: 5%;
   display: flex;
+  background-color: white;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 20px 30px;
 `;
 
 const FeedbackTitle = styled.h2`
@@ -30,7 +33,9 @@ const FeedbackInput = styled.input`
 `;
 
 const FeedbackTextarea = styled.textarea`
-  width: 100%;
+  width: 98%;
+  border-radius: 10px;
+  padding: 2%;
   height: 100px;
   margin-top: 20px;
   font-size: 18px;
@@ -41,17 +46,17 @@ const FeedbackSubmitButton = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 18px;
+  align-self: center;
   background-color: #0077ff;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 14px;
   cursor: pointer;
 `;
 
-const Feedback = ({ onClose }) => {
+const Feedback = ({onClose}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Feedback submitted!');
         onClose();
     };
 
@@ -61,13 +66,13 @@ const Feedback = ({ onClose }) => {
             <form onSubmit={handleSubmit}>
                 <FeedbackOptionWrapper>
                     <FeedbackInput type="radio" id="correct" name="feedback" value="correct" />
-                    <FeedbackOptionLabel htmlFor="correct">The outcome was correct.</FeedbackOptionLabel>
+                    <FeedbackOptionLabel htmlFor="correct">Postavljena diagnoza je bila pravilna.</FeedbackOptionLabel>
                 </FeedbackOptionWrapper>
                 <FeedbackOptionWrapper>
                     <FeedbackInput type="radio" id="incorrect" name="feedback" value="incorrect" />
-                    <FeedbackOptionLabel htmlFor="incorrect">The outcome was incorrect.</FeedbackOptionLabel>
+                    <FeedbackOptionLabel htmlFor="incorrect">Postavljena diagnoza ni bila pravilna.</FeedbackOptionLabel>
                 </FeedbackOptionWrapper>
-                <FeedbackTextarea placeholder="Please provide additional feedback..." />
+                <FeedbackTextarea placeholder="Če diagnoza ni bila pravilna, prosim napišite pravilno diagnozo." />
                 <FeedbackSubmitButton>Submit Feedback</FeedbackSubmitButton>
             </form>
         </FeedbackWrapper>

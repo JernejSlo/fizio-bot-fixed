@@ -33,10 +33,9 @@ const ChatTitle = styled.h3`
 
 
 
+
 const Chat = ({ title,selected,key,onClick }) => {
     const [isHovering, setIsHovering] = useState(false);
-
-
 
     const handleMouseEnter = () => {
         setIsHovering(true);
