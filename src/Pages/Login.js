@@ -1,23 +1,88 @@
 import Header from "../Components/Header"
 import {AppWrapper} from "../Components/Constants"
 import {useState} from "react";
-import {sha256,login} from "../db"
+import axios from "axios";
+import {setChats, setCurrentChat, setUser} from "../Slices/navSlice";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Login() {
+
+    let serverPort = 5000
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    async function handleSubmit(event) {
-        event.preventDefault();
+    function navigateTo(endpoint) {
+        navigate(endpoint);
+    }
+
+    const getCurrentChat = async (id) => {
         try {
-            const user = await login(email, sha256(password));
-            console.log(user);
-            // redirect to dashboard or profile page
-        } catch (err) {
-            console.error(err);
+            axios.post(`http://localhost:${serverPort}/getMessages`, {
+                id: id
+            })
+                .then(response => {
+                    console.log(response.data)
+                    if (response.data != null){
+                        setCurrentChat(response.data.messages)
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } catch (error) {
+            // Handle login error
+            console.log(error)
         }
     }
 
+    const getChats = async (id) => {
+        try {
+            axios.post(`http://localhost:${serverPort}/getChats`, {
+                id: id
+            })
+                .then(response => {
+                    console.log(response.data)
+                    if (response.data != null){
+                        setChats(response.data.chats)
+                        getCurrentChat(response.data.chats[0].Id)
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } catch (error) {
+            // Handle login error
+            console.log(error)
+        }
+    }
+
+    const handleSubmit = async (event) => {
+
+        event.preventDefault();
+        try {
+            axios.post(`http://localhost:${serverPort}/login`, {
+                email: email,
+                password: password
+            })
+                .then(response => {
+                    console.log(response)
+                    if (response.data.user != null){
+                        setUser(response.data.user)
+                        getChats(response.data.user.Id)
+                        navigateTo("/profile")
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } catch (error) {
+            // Handle login error
+            console.log(error)
+        }
+    };
     return (
         <AppWrapper>
             <Header />
@@ -34,7 +99,7 @@ export default function Login() {
                             <input onChange={e => setPassword(e.target.value)} type="password" id="password" name="password" required placeholder="Enter your password" style={{ padding: '10px', borderRadius: '5px', border: 'none', boxShadow: '0px 2px 5px rgba(0,0,0,0.1)' }} />
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center',marginTop: "10px" }}>
-                            <button onClick={e => handleSubmit()} type="submit" style={{ backgroundColor: '#0077C9', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Log in</button>
+                            <button onClick={e => handleSubmit(e)} type="submit" style={{ backgroundColor: '#0077C9', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Log in</button>
                         </div>
                     </form>
                 </div>

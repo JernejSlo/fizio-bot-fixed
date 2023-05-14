@@ -1,4 +1,12 @@
+const express = require('express');
 const mysql = require('mysql2');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.json());
+
+app.use(cors());
 
 const conn = mysql.createConnection({
     host: "localhost",
@@ -44,22 +52,7 @@ async function getData(func, id, table, to_match) {
     }
 }
 
-getData(pool.getAll, 0, "pogovori", "uid")
-    .then((result) => {
-        console.log(result);
-        const promises = result.map((row) => {
-            return getData(pool.getAll, row["Id"], "vsebinapogovorov", "cid");
-        });
-        return Promise.all(promises);
-    })
-    .then((results) => {
-        console.log(results);
-        conn.end();
-    })
-    .catch((error) => {
-        console.log(error);
-        conn.end();
-    });
+
 
 async function register(username, password) {
     const conn = await pool.getConnection();
@@ -103,4 +96,64 @@ const sha256 = async (input) => {
     return hash;
 };
 
-export {register, login, sha256}
+app.get('/', (req, res) => {
+    res.send('Hello, world!');
+});
+
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    console.log(req.body)
+    getData(pool.getAll, email,"uporabniki", "email").then((results) => {
+        let pass = results[0].Geslo
+        if (pass === password){
+            res.status(200).json({ message: 'User logged in successfully', user: results[0] });
+        }
+        else{
+
+            // Respond with a success message and any user data
+            res.status(404).json({ message: 'Wrong credentials! Register if you have yet to do so!', user: null });
+        }
+    })
+
+});
+
+app.post('/getChats', (req, res) => {
+    const { id } = req.body;
+    console.log(req.body)
+    getData(pool.getAll, id,"pogovori", "uid").then((results) => {
+        res.status(200).json({chats: results[0] });
+    })
+
+});
+
+app.post('/getMessages', (req, res) => {
+    const { id } = req.body;
+    console.log(req.body)
+    getData(pool.getAll, id,"vsebinapogovorov", "cid").then((results) => {
+        res.status(200).json({messages: results[0] });
+    })
+
+});
+
+// Start the server on port 5000
+app.listen(5000, () => {
+    console.log('Server started on port 5000');
+});
+/*
+getData(pool.getAll, 0, "pogovori", "uid")
+    .then((result) => {
+        console.log(result);
+        const promises = result.map((row) => {
+            return getData(pool.getAll, row["Id"], "vsebinapogovorov", "cid");
+        });
+        return Promise.all(promises);
+    })
+    .then((results) => {
+        console.log(results);
+        conn.end();
+    })
+    .catch((error) => {
+        console.log(error);
+        conn.end();
+    });
+ */

@@ -57,7 +57,7 @@ export const navSlice = createSlice({
     },
 });
 
-export const {setUser} = navSlice.actions;
+export const {setUser,setChats,setCurrentChat} = navSlice.actions;
 export const selectUser = (state) => state.nav.user;
 export const selectChats = (state) => state.nav.chats;
 export const selectCurrentChat = (state) => state.nav.current_chat;

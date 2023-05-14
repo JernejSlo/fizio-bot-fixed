@@ -11,7 +11,6 @@ import Chat from "./Pages/Chat";
 import Profile from "./Pages/Profile";
 import {Provider} from "react-redux";
 import {store} from "./store";
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
