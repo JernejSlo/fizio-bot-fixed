@@ -1,6 +1,32 @@
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentChat, selectUser, setChats, setCurrentChat, setUser, setWholeChat} from "../Slices/navSlice";
+import {useState} from "react";
 
 export default function Header() {
+
+    const user_ = useSelector(selectUser)
+    const chat = useSelector(selectCurrentChat)
+    const [user, setUser_] = useState(user_)
+
+    const navigateTo = useNavigate()
+    const dispatch = useDispatch()
+
+    function setDefault(){
+        dispatch(setUser(null))
+        dispatch(setChats([]))
+        dispatch(setWholeChat(
+            {
+                "Id": 1,
+                "chats": [
+                    {"posiljatelj": "bot", "vsebina": "Živjo, moje ime je Fizio! Če želiš govoriti z mano, se prosim prijavi."},
+                    {"posiljatelj": "User", "vsebina": "Prijaviš se lahko zgoraj s klikom na gumb Log in."},
+                    {"posiljatelj": "bot", "vsebina": "Če pa še nisi registriran pa to lahko storiš s pritiskom na gumb Sign Up."}
+                ],
+                "Diagnoza": "Welcome!"
+            }
+        ))
+    }
 
     const mouseEnter = e => {
         e.target.style.borderBottom = '1px solid white';
@@ -41,12 +67,23 @@ export default function Header() {
                     <Link to="/profile" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
                         Profile
                     </Link>
-                    <Link to="/sign-up" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                        Sign Up
-                    </Link>
-                    <Link to="/login" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                        Log in
-                    </Link>
+                    {
+                        user !== null ? (
+                                <Link to="/" onClick={e => setDefault()} style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
+                                    Sign Out
+                                </Link>
+                        ) :
+                        (
+                        <>
+                            <Link to="/sign-up" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
+                            Sign Up
+                            </Link>
+                            <Link to="/login" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
+                            Log in
+                            </Link>
+                        </>
+                        )
+                    }
                 </div>
             </nav>
         </header>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../Slices/navSlice';
+import {selectAll, selectUser} from '../Slices/navSlice';
 import { selectChats } from '../Slices/navSlice';
 import Chat from '../Components/Chat';
 import Diagnosis from "../Components/Diagnosis";
@@ -86,8 +86,7 @@ const CurrentChatWrapper = styled.div`
 `;
 
 const ProfilePage = () => {
-    const user = useSelector(selectUser);
-    const chats = useSelector(selectChats);
+    const user = useSelector(selectUser)
     const [showFeedback, setShowFeedback] = useState(false);
     const [diagnosis, setDiagnosis] = useState("Select chat to display diagnosis");
     const handleFeedbackClick = () => {
@@ -105,7 +104,7 @@ const ProfilePage = () => {
                 <ProfileSettingsWrapper>
                     <ChatHistory additionalFunction={setD}/>
 
-                    <ProfileSettingsButton onClick={handleFeedbackClick}>
+                    <ProfileSettingsButton disabled={user === null} onClick={handleFeedbackClick}>
                         Leave Feedback
                     </ProfileSettingsButton>
                 </ProfileSettingsWrapper>

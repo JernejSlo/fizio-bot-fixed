@@ -11,17 +11,45 @@ import Chat from "./Pages/Chat";
 import Profile from "./Pages/Profile";
 import {Provider} from "react-redux";
 import {store} from "./store";
+import {PersistGate} from "redux-persist/integration/react"
+import {persistStore} from "redux-persist"
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+let persistor = persistStore(store)
+
 root.render(
     <Provider store={store}>
         <React.StrictMode>
             <BrowserRouter>
                 <Routes>
-                    <Route exact path="/" element={<App/>}/>
-                    <Route exact path="/login" element={<Login/>}/>
-                    <Route exact path="/sign-up" element={<Register/>}/>
-                    <Route exact path="/chat" element={<Chat/>}/>
-                    <Route exact path="/profile" element={<Profile/>}/>
+                        <Route exact path="/" element={
+                            <PersistGate persistor={persistor}>
+                                <App/>
+                            </PersistGate>
+                        }/>
+                        <Route exact path="/login" element={
+                            <PersistGate persistor={persistor}>
+                                <Login/>
+                            </PersistGate>
+                        }/>
+                        <Route exact path="/sign-up" element={
+                            <PersistGate persistor={persistor}>
+                                <Register/>
+                            </PersistGate>
+                        }/>
+                        <Route exact path="/chat" element={
+                            <PersistGate persistor={persistor}>
+                                <Chat/>
+                            </PersistGate>
+                        }/>
+                        <Route exact path="/profile" element={
+                            <PersistGate persistor={persistor}>
+                                <Profile/>
+                            </PersistGate>
+                        }/>
                 </Routes>
 
             </BrowserRouter>

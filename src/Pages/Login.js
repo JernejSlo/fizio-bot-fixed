@@ -1,14 +1,16 @@
 import Header from "../Components/Header"
 import {AppWrapper} from "../Components/Constants"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {setChats, setCurrentChat, setUser} from "../Slices/navSlice";
-import { useNavigate } from "react-router-dom";
-
+import {useLocation, useNavigate} from "react-router-dom";
+import ChatHistory from "../Components/ChatHistory";
+import {serverPort} from "../DatabaseCalls"
+import {useDispatch} from "react-redux";
 
 export default function Login() {
 
-    let serverPort = 5000
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +19,6 @@ export default function Login() {
     function navigateTo(endpoint) {
         navigate(endpoint);
     }
-
     const getCurrentChat = async (id) => {
         try {
             axios.post(`http://localhost:${serverPort}/getMessages`, {
@@ -26,7 +27,7 @@ export default function Login() {
                 .then(response => {
                     console.log(response.data)
                     if (response.data != null){
-                        setCurrentChat(response.data.messages)
+                        dispatch(setCurrentChat(response.data.messages))
                     }
                 })
                 .catch(error => {
@@ -38,15 +39,16 @@ export default function Login() {
         }
     }
 
+
     const getChats = async (id) => {
         try {
             axios.post(`http://localhost:${serverPort}/getChats`, {
                 id: id
             })
                 .then(response => {
-                    console.log(response.data)
+                    console.log(response.data.chats)
                     if (response.data != null){
-                        setChats(response.data.chats)
+                        dispatch(setChats(response.data.chats))
                         getCurrentChat(response.data.chats[0].Id)
                     }
                 })
@@ -59,6 +61,7 @@ export default function Login() {
         }
     }
 
+
     const handleSubmit = async (event) => {
 
         event.preventDefault();
@@ -68,9 +71,9 @@ export default function Login() {
                 password: password
             })
                 .then(response => {
-                    console.log(response)
+                    console.log(response.data.user)
                     if (response.data.user != null){
-                        setUser(response.data.user)
+                        dispatch(setUser(response.data.user))
                         getChats(response.data.user.Id)
                         navigateTo("/profile")
                     }

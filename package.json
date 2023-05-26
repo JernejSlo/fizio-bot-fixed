@@ -11,8 +11,10 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "express": "^4.18.2",
     "mysql2": "^3.3.1",
+    "natural": "^6.3.0",
     "net": "^1.0.2",
     "process": "^0.11.10",
     "react": "^18.2.0",
@@ -21,6 +23,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.0",
     "react-scripts": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.10",
     "timers-browserify": "^2.0.12",
@@ -55,7 +58,6 @@
     ]
   },
   "devDependencies": {
-    "@tensorflow/tfjs": "^4.4.0",
     "crypto-browserify": "^3.12.0"
   }
 }

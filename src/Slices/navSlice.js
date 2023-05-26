@@ -1,42 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    user: {"username": "jernej", "photo": "/FizioBot.png", "id": 1},
+    user: null,
     chats: [
-        {"title": "First Chat","chatID": 1, "diagnosis": "Tight quad"},
-        {"title": "Chat example","chatID": 2, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 3, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 4, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 5, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 6, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 7, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 8, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 9, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 10, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 11, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 12, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 13, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 14, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 15, "diagnosis": "Tight hip abductor"},
-        {"title": "Chat example","chatID": 16, "diagnosis": "Tight hip abductor"},
+        {"Naslov": "First Chat","Id": 1, "Diagnoza": "Tight quad"},
+        {"Naslov": "Chat example","Id": 2, "Diagnoza": "Tight hip abductor"},
+        {"Naslov": "Chat example","Id": 3, "Diagnoza": "Tight hip abductor"},
+        {"Naslov": "Chat example","Id": 4, "Diagnoza": "Tight hip abductor"},
+        {"Naslov": "Chat example","Id": 5, "Diagnoza": "Tight hip abductor"},
+        {"Naslov": "Chat example","Id": 6, "Diagnoza": "Tight hip abductor"},
+        {"Naslov": "Chat example","Id": 7, "Diagnoza": "Tight hip abductor"},
     ],
     current_chat: {
-        "chatID": 1,
+        "cid": 0,
         "chats": [
-            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"},{"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"},
-            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"},
-            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"},
-            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"},
-            {"sender": "Bot","content": "Hi! I am Fizio-bot a virtual assistant for all your physiotherapeutic needs"},
-            {"sender": "User","content": "Hi Fizio!"},
-
+            {"Id": 0,"posiljatelj": "bot", "vsebina": "Živjo, moje ime je Fizio! Če želiš govoriti z mano, se prosim prijavi."},
+            {"Id": 1,"posiljatelj": "User", "vsebina": "Prijaviš se lahko zgoraj s klikom na gumb Log in."},
+            {"Id": 2,"posiljatelj": "bot", "vsebina": "Če pa še nisi registriran pa to lahko storiš s pritiskom na gumb Sign Up."}
         ],
-        "diagnosis": "Tight quad"
+        "Diagnoza": "Welcome!"
     },
 }
 
@@ -48,18 +30,47 @@ export const navSlice = createSlice({
             state.user = action.payload;
         },
         setChats: (state, action) => {
+            console.log(action.payload)
             state.chats = action.payload;
         },
         setCurrentChat: (state, action) => {
+            state.current_chat.chats = action.payload;
+        },
+        setCurrentChatCID:(state, action) => {
+            state.current_chat.cid = action.payload;
+        },
+        setWholeChat: (state, action) => {
             state.current_chat = action.payload;
         },
+        addToChat: (state, action) => {
+            state.current_chat.chats.push(action.payload);
+        },
+        popFromChat:(state, action) => {
+            state.current_chat.chats = state.current_chat.chats.filter(function(element) {
+                return element.vsebina !== action.payload;
+            });
+        },
+        addAChat: (state, action) => {
+            state.chats.push(action.payload);
+        },
+        setChatTitle: (state, action) => {
+            let index = 0
+            for (let dict in state.chats){
+                if (state.chats[dict].Id == action.payload.Id){
+                    break
+                }
+                index++
+            }
+            state.chats[index].Naslov = action.payload.Naslov
+        }
 
     },
 });
 
-export const {setUser,setChats,setCurrentChat} = navSlice.actions;
+export const {setUser,setChats,setCurrentChat, setWholeChat, addToChat,addAChat, setCurrentChatCID, popFromChat, setChatTitle} = navSlice.actions;
 export const selectUser = (state) => state.nav.user;
 export const selectChats = (state) => state.nav.chats;
 export const selectCurrentChat = (state) => state.nav.current_chat;
+export const selectAll = (state) => state.nav
 
 export default navSlice.reducer;
