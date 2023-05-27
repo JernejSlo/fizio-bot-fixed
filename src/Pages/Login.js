@@ -45,7 +45,6 @@ export default function Login() {
                 id: id
             })
                 .then(response => {
-                    console.log(response.data.chats)
                     if (response.data != null){
                         dispatch(setChats(response.data.chats))
                         getCurrentChat(response.data.chats[0].Id)
@@ -70,7 +69,6 @@ export default function Login() {
                 password: password
             })
                 .then(response => {
-                    console.log(response.data.user)
                     if (response.data.user != null){
                         dispatch(setUser(response.data.user))
                         getChats(response.data.user.Id)
