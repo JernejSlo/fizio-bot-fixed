@@ -22,7 +22,7 @@ const conn = mysql.createConnection({
     host: "localhost",
     user: "studenti",
     password: "12345678",
-    database: "89211282",
+    database: "SISIII2023_89211282",
 })
 let pool={}
 
