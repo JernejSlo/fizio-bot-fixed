@@ -54,7 +54,7 @@ conn.connect((err) => {
 
 async function predict(array){
     // Load the classifier from the file
-    const serializedClassifierLoaded = fs.readFileSync('src/PythonScripts/classifier.json');
+    const serializedClassifierLoaded = fs.readFileSync('PythonScripts/classifier.json');
     const classifierLoaded = natural.BayesClassifier.restore(JSON.parse(serializedClassifierLoaded));
 
     function removeNonDatasetElements(inputArray, dataset) {
