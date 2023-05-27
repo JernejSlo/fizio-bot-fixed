@@ -2,10 +2,11 @@ import axios from "axios";
 import {setChats, setCurrentChat} from "./Slices/navSlice";
 
 let serverPort = 5006
+let baseConn = "88.200.63.148"
 
 const getCurrentChat = async (id,set,dispatch) => {
     try {
-        axios.post(`http://localhost:${serverPort}/getMessages`, {
+        axios.post(`http://${baseConn}:${serverPort}/getMessages`, {
             id: id
         })
             .then(response => {
@@ -25,7 +26,7 @@ const getCurrentChat = async (id,set,dispatch) => {
 
 const getDiagnosis = async (id) => {
     try {
-        axios.post(`http://localhost:${serverPort}/getDiagnosis`, {
+        axios.post(`http://${baseConn}:${serverPort}/getDiagnosis`, {
             id: id
         })
             .then(response => {
@@ -45,7 +46,7 @@ const getDiagnosis = async (id) => {
 
 const getChats = async (id,set,setAll,dispatch) => {
     try {
-        axios.post(`http://localhost:${serverPort}/getChats`, {
+        axios.post(`http://${baseConn}:${serverPort}/getChats`, {
             id: id
         })
             .then(response => {
@@ -64,4 +65,4 @@ const getChats = async (id,set,setAll,dispatch) => {
     }
 }
 
-export {getChats,getCurrentChat,serverPort}
+export {getChats,getCurrentChat,serverPort,baseConn}

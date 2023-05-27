@@ -5,7 +5,7 @@ import axios from "axios";
 import {setChats, setCurrentChat, setUser} from "../Slices/navSlice";
 import {useLocation, useNavigate} from "react-router-dom";
 import ChatHistory from "../Components/ChatHistory";
-import {serverPort} from "../DatabaseCalls"
+import {baseConn, serverPort} from "../DatabaseCalls"
 import {useDispatch} from "react-redux";
 
 export default function Login() {
@@ -21,7 +21,7 @@ export default function Login() {
     }
     const getCurrentChat = async (id) => {
         try {
-            axios.post(`http://localhost:${serverPort}/getMessages`, {
+            axios.post(`http://${baseConn}:${serverPort}/getMessages`, {
                 id: id
             })
                 .then(response => {
@@ -42,7 +42,7 @@ export default function Login() {
 
     const getChats = async (id) => {
         try {
-            axios.post(`http://localhost:${serverPort}/getChats`, {
+            axios.post(`http://${baseConn}:${serverPort}/getChats`, {
                 id: id
             })
                 .then(response => {
@@ -66,7 +66,7 @@ export default function Login() {
 
         event.preventDefault();
         try {
-            axios.post(`http://localhost:${serverPort}/login`, {
+            axios.post(`http://${baseConn}:${serverPort}/login`, {
                 email: email,
                 password: password
             })

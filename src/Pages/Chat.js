@@ -15,7 +15,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 import axios from "axios";
-import {serverPort} from "../DatabaseCalls";
+import {baseConn, serverPort} from "../DatabaseCalls";
 
 const ProfileSettingsButton = styled.button`
   margin-bottom: 5px;
@@ -121,7 +121,7 @@ export default function Chat() {
             .catch(error => {
                 console.error(error);
             });
-        axios.post(`http://localhost:${serverPort}/alterDiagnosis`, {
+        axios.post(`http://${baseConn}:${serverPort}/alterDiagnosis`, {
             Diagnoza: "Dorzalgija",
             Id: current
         })
@@ -189,7 +189,7 @@ export default function Chat() {
 
         if (response == "Finished"){
 
-            axios.post(`http://localhost:${serverPort}/predict`, {
+            axios.post(`http://${baseConn}:${serverPort}/predict`, {
                 array: symptoms,
             })
                 .then(async response => {
@@ -231,7 +231,7 @@ export default function Chat() {
 
     // this function handles querying the express app to add a new message to teh current conversation
     function addMessage(cid,sender,message){
-        axios.post(`http://localhost:${serverPort}/addMessage`, {
+        axios.post(`http://${baseConn}:${serverPort}/addMessage`, {
             cid: cid,
             sender: sender,
             message: message

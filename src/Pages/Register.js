@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {serverPort} from "../DatabaseCalls";
+import {baseConn, serverPort} from "../DatabaseCalls";
 import {setChats, setCurrentChat, setUser, setWholeChat} from "../Slices/navSlice";
 export default function Register() {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export default function Register() {
 
         event.preventDefault();
         try {
-            axios.post(`http://localhost:${serverPort}/login`, {
+            axios.post(`http://${baseConn}:${serverPort}/login`, {
                 email: email,
                 password: password
             })
@@ -42,7 +42,7 @@ export default function Register() {
     };
 
     function addChat(uid){
-        axios.post(`http://localhost:${serverPort}/addChat`, {
+        axios.post(`http://${baseConn}:${serverPort}/addChat`, {
             uid: uid
         })
             .then(response => {
@@ -58,7 +58,7 @@ export default function Register() {
             });
     }
     function addMessage(cid,sender,message){
-        axios.post(`http://localhost:${serverPort}/addMessage`, {
+        axios.post(`http://${baseConn}:${serverPort}/addMessage`, {
             cid: cid,
             sender: sender,
             message: message
@@ -84,7 +84,7 @@ export default function Register() {
 
     // function that send an api call to the db.js app to insert data
     function register(){
-        axios.post(`http://localhost:${serverPort}/register`, {
+        axios.post(`http://${baseConn}:${serverPort}/register`, {
             name: name,
             email: email,
             password: password,

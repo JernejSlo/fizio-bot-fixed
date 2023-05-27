@@ -11,7 +11,7 @@ import {
 } from "../Slices/navSlice";
 import Chat from "../Components/Chat";
 import axios from "axios";
-import {getChats, serverPort} from "../DatabaseCalls";
+import {baseConn, getChats, serverPort} from "../DatabaseCalls";
 
 const ChatHistoryWrapper = styled.div`
   height: 65vh;
@@ -83,7 +83,7 @@ const ChatHistory = ({additionalFunction, setDiagnosis}) => {
     // function that queries the express app to receive the current chat
     const getCurrentChat = async (id) => {
         try {
-            axios.post(`http://localhost:${serverPort}/getMessages`, {
+            axios.post(`http://${baseConn}:${serverPort}/getMessages`, {
                 id: id
             })
                 .then(response => {
@@ -103,7 +103,7 @@ const ChatHistory = ({additionalFunction, setDiagnosis}) => {
     // function that handles adding a new chat
     const addChat = async (e,uid) => {
         e.preventDefault()
-        axios.post(`http://localhost:${serverPort}/addChat`, {
+        axios.post(`http://${baseConn}:${serverPort}/addChat`, {
             uid: uid
         })
             .then(response => {
