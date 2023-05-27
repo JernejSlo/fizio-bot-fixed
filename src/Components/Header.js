@@ -6,10 +6,8 @@ import {useState} from "react";
 export default function Header() {
 
     const user_ = useSelector(selectUser)
-    const chat = useSelector(selectCurrentChat)
     const [user, setUser_] = useState(user_)
 
-    const navigateTo = useNavigate()
     const dispatch = useDispatch()
 
     function setDefault(){
@@ -20,8 +18,8 @@ export default function Header() {
                 "Id": 1,
                 "chats": [
                     {"posiljatelj": "bot", "vsebina": "Živjo, moje ime je Fizio! Če želiš govoriti z mano, se prosim prijavi."},
-                    {"posiljatelj": "User", "vsebina": "Prijaviš se lahko zgoraj s klikom na gumb Log in."},
-                    {"posiljatelj": "bot", "vsebina": "Če pa še nisi registriran pa to lahko storiš s pritiskom na gumb Sign Up."}
+                    {"posiljatelj": "User", "vsebina": "Prijaviš se lahko zgoraj s klikom na gumb Prijava."},
+                    {"posiljatelj": "bot", "vsebina": "Če pa še nisi registriran pa to lahko storiš s pritiskom na gumb Registracija."}
                 ],
                 "Diagnoza": "Welcome!"
             }
@@ -59,13 +57,13 @@ export default function Header() {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',width: "48%" }}>
 
                     <Link to="/" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                        Home
+                        Začetek
                     </Link>
                     <Link to="/chat" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                        Chat
+                        Pogovor
                     </Link>
                     <Link to="/profile" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                        Profile
+                        Profil
                     </Link>
                     {
                         user !== null ? (
@@ -76,10 +74,10 @@ export default function Header() {
                         (
                         <>
                             <Link to="/sign-up" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                            Sign Up
+                            Registracija
                             </Link>
                             <Link to="/login" style={linkStyle} onMouseEnter={e => mouseEnter(e)} onMouseLeave={e => mouseLeave(e)}>
-                            Log in
+                            Prijava
                             </Link>
                         </>
                         )

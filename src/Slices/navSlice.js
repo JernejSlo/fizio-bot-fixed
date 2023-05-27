@@ -30,7 +30,6 @@ export const navSlice = createSlice({
             state.user = action.payload;
         },
         setChats: (state, action) => {
-            console.log(action.payload)
             state.chats = action.payload;
         },
         setCurrentChat: (state, action) => {
@@ -62,12 +61,27 @@ export const navSlice = createSlice({
                 index++
             }
             state.chats[index].Naslov = action.payload.Naslov
-        }
+        },
+        setChatDiagnosis: (state, action) => {
+            let index = 0
+            for (let dict in state.chats){
+                if (state.chats[dict].Id == action.payload.Id){
+                    break
+                }
+                index++
+            }
+            state.chats[index].Diagnoza = action.payload.Diagnoza
+        },
+        setSelectedChat: (state, action) => {
+            state.chats = state.chats.map(chat =>
+                chat.Id === action.payload ? { ...chat, selected: true } : { ...chat, selected: false }
+            );
+        },
 
     },
 });
 
-export const {setUser,setChats,setCurrentChat, setWholeChat, addToChat,addAChat, setCurrentChatCID, popFromChat, setChatTitle} = navSlice.actions;
+export const {setUser,setChats,setCurrentChat, setWholeChat, addToChat,addAChat, setCurrentChatCID, popFromChat,setSelectedChat, setChatTitle, setChatDiagnosis} = navSlice.actions;
 export const selectUser = (state) => state.nav.user;
 export const selectChats = (state) => state.nav.chats;
 export const selectCurrentChat = (state) => state.nav.current_chat;

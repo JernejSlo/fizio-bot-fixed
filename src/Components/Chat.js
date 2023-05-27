@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { BsChatLeft } from "react-icons/bs";
 import styled from 'styled-components';
-import {useSelector} from "react-redux";
-import {selectCurrentChat} from "../Slices/navSlice";
+import {selectChats, selectCurrentChat, selectUser, setChats, setSelectedChat} from "../Slices/navSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const ChatContainer = styled.button`
   display: flex;
@@ -34,8 +34,12 @@ const ChatTitle = styled.h3`
 
 
 
-const Chat = ({ title,selected,key,onClick }) => {
+const Chat = ({ chat,selected,key,onClick }) => {
+
+    const current = useSelector(selectCurrentChat)
+
     const [isHovering, setIsHovering] = useState(false);
+    const [isSelected, setIsSelected] = useState(selected);
 
     const handleMouseEnter = () => {
         setIsHovering(true);
@@ -45,16 +49,26 @@ const Chat = ({ title,selected,key,onClick }) => {
         setIsHovering(false);
     };
 
+
+    useEffect(() => {
+        if (current.cid === chat.Id){
+            setIsSelected(true)
+        }
+        else{
+            setIsSelected(false)
+        }
+    }, [current]);
+
     return (
             <ChatContainer
                 onClick={onClick}
                 isHovering={isHovering}
-                isSelected={selected}
+                isSelected={isSelected}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
                 <ChatIcon />
-                <ChatTitle>{title}</ChatTitle>
+                <ChatTitle>{chat.Naslov}</ChatTitle>
             </ChatContainer>
     );
 };

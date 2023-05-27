@@ -176,6 +176,7 @@ async function getData(func, id, table, to_match) {
     }
 }
 
+// this function encodes the password so that it is stored and handled securely
 const sha256 = (input) => {
     const hash = crypto.createHash('sha256');
     hash.update(input);
@@ -203,7 +204,7 @@ pool.createUser = async (name, email, password) => {
 pool.addChat = async (uid) => {
     return new Promise((resolve, reject) => {
         conn.query(
-            'INSERT INTO pogovori (uid,Naslov) VALUES (?,?)',
+            'INSERT INTO pogovori (uid,Naslov,Diagnoza) VALUES (?,?,"Diagnoza ni postavljena")',
             [uid,"Nov Pogovor"],
             (error, result) => {
                 if (error) {
@@ -248,6 +249,22 @@ pool.changeTitle = async (Id, naslov) => {
     });
 };
 
+pool.changeDiagnosis = async (Id, diagnoza) => {
+    return new Promise((resolve, reject) => {
+        conn.query(
+            'UPDATE pogovori SET pogovori.Diagnoza = (?) WHERE pogovori.Id = (?);',
+            [diagnoza, Id],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+    });
+};
+
 app.post('/predict', async (req, res) => {
     const {array} = req.body;
     let prediction_ = await predict(array)
@@ -280,14 +297,6 @@ app.post('/login', (req, res) => {
 
 });
 
-app.post('/getChats', (req, res) => {
-    const { id } = req.body;
-    getData(pool.getAll, id,"pogovori", "uid").then((results) => {
-        res.status(200).json({chats: results });
-    })
-
-});
-
 app.post('/register', (req, res) => {
     const { name, email, password } = req.body;
 
@@ -303,6 +312,13 @@ app.post('/register', (req, res) => {
         });
 });
 
+app.post('/getChats', (req, res) => {
+    const { id } = req.body;
+    getData(pool.getAll, id,"pogovori", "uid").then((results) => {
+        res.status(200).json({chats: results });
+    })
+
+});
 
 app.post('/addChat', (req, res) => {
     const { uid } = req.body;
@@ -321,7 +337,6 @@ app.post('/alterChat', (req, res) => {
     const { Id, naslov } = req.body;
     pool.changeTitle(Id,naslov)
         .then(result => {
-            console.log(Id,result)
             res.status(200).json({ message: 'Title changed successfully.'});
         })
         .catch(error => {
@@ -332,6 +347,20 @@ app.post('/alterChat', (req, res) => {
 
     // add logic for appending the
 
+});
+
+app.post('/alterDiagnosis', (req, res) => {
+    const { Id, Diagnoza } = req.body;
+    pool.changeDiagnosis(Id,Diagnoza)
+        .then(result => {
+            console.log(Id,result)
+            res.status(200).json({ message: 'Diagnosis changed successfully.'});
+        })
+        .catch(error => {
+            // Error occurred during registration
+            console.error(error);
+            res.status(500).json({ message: 'Diagnosis change failed.' });
+        });
 });
 
 app.post('/addMessage', (req, res) => {
@@ -345,13 +374,7 @@ app.post('/addMessage', (req, res) => {
             console.error(error);
             res.status(500).json({ message: 'Message insert failed.' });
         });
-
-    // add logic for appending the
-
 });
-
-
-
 
 app.post('/getMessages', (req, res) => {
     const { id } = req.body;
@@ -361,33 +384,7 @@ app.post('/getMessages', (req, res) => {
 
 });
 
-app.post('/getDiagnosis', (req, res) => {
-    const { id } = req.body;
-    getData(pool.getAll, id,"diagnoze", "uid").then((results) => {
-        res.status(200).json({diagnoses: results });
-    })
-
-});
-
 // Start the server on port 5000
 app.listen(5000, () => {
     console.log('Server started on port 5000');
 });
-/*
-getData(pool.getAll, 0, "pogovori", "uid")
-    .then((result) => {
-        console.log(result);
-        const promises = result.map((row) => {
-            return getData(pool.getAll, row["Id"], "vsebinapogovorov", "cid");
-        });
-        return Promise.all(promises);
-    })
-    .then((results) => {
-        console.log(results);
-        conn.end();
-    })
-    .catch((error) => {
-        console.log(error);
-        conn.end();
-    });
- */

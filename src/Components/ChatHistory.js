@@ -1,11 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {selectChats, selectCurrentChat, selectUser, setChats, setCurrentChat,addAChat,setCurrentChatCID} from "../Slices/navSlice";
+import {
+    selectChats,
+    selectUser,
+    setCurrentChat,
+    addAChat,
+    setCurrentChatCID,
+    setSelectedChat, selectCurrentChat, setChats
+} from "../Slices/navSlice";
 import Chat from "../Components/Chat";
-import {useLocation, useNavigate} from "react-router-dom"
 import axios from "axios";
-import {serverPort} from "../DatabaseCalls";
+import {getChats, serverPort} from "../DatabaseCalls";
 
 const ChatHistoryWrapper = styled.div`
   height: 65vh;
@@ -54,50 +60,34 @@ const ProfileSettingsButton = styled.button`
   }
 `;
 
-function getChat(chats, chatID) {
-    const updatedChats = chats.map(chat => {
-        if (chat.Id === chatID) {
-            return {
-                ...chat,
-                selected: true
-            };
-        } else {
-            return {
-                ...chat,
-                selected: false
-            };
-        }
-    });
-    return updatedChats;
-}
 
 
 const ChatHistory = ({additionalFunction, setDiagnosis}) => {
-    const chats = useSelector(selectChats);
-    const user = useSelector(selectUser)
-    const current_ = useSelector(selectCurrentChat)
-    const [selectedChatID, setSelectedChatID] = useState(null);
-    const [updatedChats, setUpdatedChats] = useState(getChat(chats, selectedChatID));
-    const [current, setCurrent] = useState([]);
-
-    function handleChatClick(chatD,chatID,setDiagnosis){
-        setSelectedChatID(chatID);
-        additionalFunction(chatD);
-        dispatch(setCurrentChatCID(chatID));
-        getCurrentChat(chatID)
-    };
 
     const dispatch = useDispatch()
 
+    const chats = useSelector(selectChats)
+    const user = useSelector(selectUser)
+    const current = useSelector(selectCurrentChat)
+
+
+    // function that handles changing the chat
+    async function handleChatClick(chatD, chatID, setDiagnosis) {
+        additionalFunction(chatD.Diagnoza);
+        dispatch(setCurrentChatCID(chatID));
+        getCurrentChat(chatID)
+        dispatch(setSelectedChat(chatD.Id))
+    };
+
+
+    // function that queries the express app to receive the current chat
     const getCurrentChat = async (id) => {
         try {
             axios.post(`http://localhost:${serverPort}/getMessages`, {
                 id: id
             })
                 .then(response => {
-                    console.log(response.data)
                     if (response.data != null){
-                        console.log(response.data.messages)
                         dispatch(setCurrentChat(response.data.messages))
                         dispatch(setCurrentChatCID(id))
                     }
@@ -110,21 +100,22 @@ const ChatHistory = ({additionalFunction, setDiagnosis}) => {
             console.log(error)
         }
     }
-
-    function addChat(uid){
+    // function that handles adding a new chat
+    const addChat = async (e,uid) => {
+        e.preventDefault()
         axios.post(`http://localhost:${serverPort}/addChat`, {
             uid: uid
         })
             .then(response => {
                 // add function to add chat and chats
-                console.log(response)
-                dispatch(addAChat({"Naslov": "Nov Pogovor","Id": response.data.Id, "Diagnoza": ""}))
-
+                dispatch(addAChat({"Naslov": "Nov Pogovor", "Id": response.data.Id, "Diagnoza": "Ni diagnoze"}))
             })
             .catch(error => {
                 console.error(error);
             });
+
     }
+
 
     return (
         <div style={{
@@ -132,18 +123,18 @@ const ChatHistory = ({additionalFunction, setDiagnosis}) => {
             <ChatHistoryTitle>POGOVORI</ChatHistoryTitle>
             <ChatHistoryWrapper>
 
-                {user != null ? (updatedChats.map(chat => (
+                {user != null ? (chats.map(chat => (
                     <Chat
-                        title={chat.Naslov}
+                        chat={chat}
                         selected={chat.selected}
                         key={chat.Id}
-                        onClick={() => handleChatClick(chat.Diagnoza,chat.Id,setDiagnosis)}
+                        onClick={() => handleChatClick(chat,chat.Id,setDiagnosis)}
                     />
                 ))) : <text>
                     Prijavi se, da vidiš vse svoje pogovore!
                 </text>}
             </ChatHistoryWrapper>
-            <ProfileSettingsButton onClick={e => addChat(user.Id)} disabled={user === null}>
+            <ProfileSettingsButton onClick={e => addChat(e,user.Id)} disabled={user === null}>
                 Nov pogovor
             </ProfileSettingsButton>
         </div>

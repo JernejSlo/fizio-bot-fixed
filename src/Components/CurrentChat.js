@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import {selectChats, selectCurrentChat, selectUser} from '../Slices/navSlice';
-import {useEffect, useRef} from "react";
+import {useDispatch, useSelector} from 'react-redux';
+import {selectChats, selectCurrentChat, selectUser, setChats, setSelectedChat} from '../Slices/navSlice';
+import {useEffect, useRef, useState} from "react";
 
 const ChatWrapper = styled.div`
   display: flex;
@@ -17,9 +17,10 @@ const ChatContainer = styled.div`
   flex-direction: column;
   padding: 14px;
   overflow-y: hidden;
+  padding-right:  8px;
   &:hover {
     overflow-y: auto;
-    padding-right:  8px;
+    padding-right: ${props => props.isOverflowing ? '2px' : '8px'};
   }
 
   &::-webkit-scrollbar {
@@ -51,42 +52,32 @@ const ChatMessage = styled.div`
   background-color: ${(props) => (props.isSender ? '#03a9f4' : '#f5f5f5')};
   color: ${(props) => (props.isSender ? '#fff' : '#333')};
 `;
-const ProfileSettingsButton = styled.button`
-  margin-bottom: 5px;
-  width: 100%;
-  background-color: #1890ff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 
-  &:hover {
-    background-color: #40a9ff;
-  }
-`;
 const CurrentChat = () => {
     const currentChat = useSelector(selectCurrentChat);
-    const chats = useSelector(selectChats);
     const user = useSelector(selectUser)
-
     const chatContainerRef = useRef(null);
 
+    const [isOverflowing, setIsOverflowing] = useState(false);
+
+    // this use effect handles scrolling and changing the padding to smoothly fit the scrollbar
     useEffect(() => {
         const chatContainer = chatContainerRef.current;
         const lastChatBubble = chatContainer.lastElementChild;
         if (lastChatBubble != null){
             lastChatBubble.scrollIntoView({ behavior: 'smooth' });
         }
+        if (chatContainer.scrollHeight > chatContainer.clientHeight) {
+            setIsOverflowing(true);
+        } else {
+            setIsOverflowing(false);
+        }
     }, [currentChat]);
 
     return (
         <ChatWrapper>
             <h3>{user !== null ? currentChat.Naslov : ""}</h3>
-            <ChatContainer ref={chatContainerRef}>
+            <ChatContainer isOverflowing={isOverflowing} ref={chatContainerRef} >
                 {currentChat.chats.map((chat) => (
                     <ChatBubble isSender={chat.posiljatelj === 'User'}>
                         <ChatMessage isSender={chat.posiljatelj === 'User'}>

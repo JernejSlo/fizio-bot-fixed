@@ -10,7 +10,7 @@ import {
     setWholeChat,
     addToChat,
     selectCurrentChat,
-    popFromChat, setChatTitle
+    popFromChat, setChatTitle, setChatDiagnosis
 } from "../Slices/navSlice";
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
@@ -106,11 +106,12 @@ export default function Chat() {
     const [symptoms,setSyptoms] = useState([])
 
     let response = ""
-    let bp = ""
 
+    // this function handles setting the title and current body part
     function setBodypartAndTitle(message){
         setBodypart(message)
         dispatch(setChatTitle( {Naslov: "Bolečine v Hrbtu", Id: current}))
+        dispatch(setChatDiagnosis({Diagnoza: "Dorzalgija", Id: current}))
         axios.post(`http://localhost:${serverPort}/alterChat`, {
             naslov: "Bolečine v Hrbtu",
             Id: current
@@ -120,10 +121,20 @@ export default function Chat() {
             .catch(error => {
                 console.error(error);
             });
+        axios.post(`http://localhost:${serverPort}/alterDiagnosis`, {
+            Diagnoza: "Dorzalgija",
+            Id: current
+        })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
-    function loadSymptoms(){
-
+    // this function makes sure that when switching the chats no error occurs when responding
+    async function loadSymptoms(){
         let arr = []
         for (let chat in chats.chats){
             if (chats.chats[chat].posiljatelj === "User"){
@@ -139,48 +150,42 @@ export default function Chat() {
         setSyptoms(arr)
     }
 
-    useEffect(() => {
+    // when the content of the current chat is changed, this updates the symptoms
+    useEffect( () => {
         loadSymptoms()
-    }, [current]);
+    }, [chats]);
 
-
+    // for sending with enter
     function handleKeyDown(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
             sendMessage(event,current)
         }
     }
-
+    // this function adds a new symptom to the symptoms array
     function add(answer){
         let arr = symptoms
         arr.push(answer)
         setSyptoms(arr)
-        console.log(arr)
     }
+
+    // delays the function for a pleasant visual effect of the bot actually thinking
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    function test(event,cid){
-        axios.post(`http://localhost:${serverPort}/predict`, {
-            array: ['akutna',"Hrbet", "mmmm",'poškodba', 'a,b', 'sem', 'da', 'oteklina', 'imam', 'zdravila'],
-        })
-            .then(response => {
-                addMessage(cid,"bot",response.data.prediction)
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
 
+    // this function sends the message and also handles the bots response
     async function sendMessage(event,cid){
         event.preventDefault()
-        addMessage(cid,"User",text)
+        let text_ = text+""
+        setText("")
+        addMessage(cid,"User",text_)
         await delay(100);
         dispatch(addToChat({"Id": 0,"posiljatelj": "bot",
             "vsebina": "..."}))
         await delay(1000);
         dispatch(popFromChat("..."))
-        response = await BotResponse(text,bodypart,setBodypartAndTitle,add)
+        response = await BotResponse(text_,bodypart,setBodypartAndTitle,add)
 
         if (response == "Finished"){
 
@@ -220,11 +225,11 @@ export default function Chat() {
         }else{
             addMessage(cid,"bot",response)
         }
-        setText("")
 
 
     }
 
+    // this function handles querying the express app to add a new message to teh current conversation
     function addMessage(cid,sender,message){
         axios.post(`http://localhost:${serverPort}/addMessage`, {
             cid: cid,
