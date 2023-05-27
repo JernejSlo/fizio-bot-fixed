@@ -19,6 +19,7 @@ host: "localhost",
  */
 
 const conn = mysql.createConnection({
+    host: "88.200.63.148",
     user: "codeigniter",
     password: "codeigniter2019",
     database: "SISIII2023_89211282",
