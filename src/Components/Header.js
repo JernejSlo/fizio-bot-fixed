@@ -52,7 +52,7 @@ export default function Header() {
         <header style={{ backgroundColor: 'transparent', height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1200px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start'}}>
-                    <img src="/FizioBot.PNG" alt="FizioBot logo" style={{ height: '80px', marginRight: '20px' }} />
+                    <img src="public/FizioBot.PNG" alt="FizioBot logo" style={{ height: '80px', marginRight: '20px' }} />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',width: "48%" }}>
 
