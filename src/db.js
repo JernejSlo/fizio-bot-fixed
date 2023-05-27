@@ -274,6 +274,7 @@ pool.changeDiagnosis = async (Id, diagnoza) => {
 app.post('/predict', async (req, res) => {
     const {array} = req.body;
     let prediction_ = await predict(array)
+    console.log(prediction_)
     res.status(200).json({message: 'Successfully predicted on the data', prediction: prediction_});
 });
 
