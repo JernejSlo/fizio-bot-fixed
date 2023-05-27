@@ -390,7 +390,7 @@ app.post('/getMessages', (req, res) => {
 
 });
 
-// Start the server on port 5000
+// Start the server on port 5006
 app.listen(5006, () => {
-    console.log('Server started on port 5000');
+    console.log('Server started on port 5006');
 });
