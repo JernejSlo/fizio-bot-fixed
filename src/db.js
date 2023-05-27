@@ -391,6 +391,6 @@ app.post('/getMessages', (req, res) => {
 });
 
 // Start the server on port 5000
-app.listen(5000, () => {
+app.listen(5006, () => {
     console.log('Server started on port 5000');
 });
