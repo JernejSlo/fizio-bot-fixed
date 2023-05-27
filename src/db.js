@@ -19,8 +19,8 @@ host: "localhost",
  */
 
 const conn = mysql.createConnection({
-    user: "codeigniter",
-    password: "codeigniter2019",
+    user: "studenti",
+    password: "12345678",
     database: "SISIII2023_89211282",
 })
 let pool={}
