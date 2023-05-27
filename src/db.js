@@ -11,11 +11,18 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-const conn = mysql.createConnection({
-    host: "localhost",
+/*
+host: "localhost",
     user: "root",
     password: "",
     database: 'SISIII2023_89211282',
+ */
+
+const conn = mysql.createConnection({
+    host: "localhost",
+    user: "studenti",
+    password: "12345678",
+    database: "SISIII2023_89211282",
 })
 let pool={}
 
