@@ -46,8 +46,6 @@ export default function Register() {
             uid: uid
         })
             .then(response => {
-                // add function to add chat and chats
-                console.log(response)
                 dispatch(setChats([{"Naslov": "Nov Pogovor","Id": response.data.Id, "Diagnoza": ""},]))
 
 
@@ -90,7 +88,6 @@ export default function Register() {
             password: password,
         })
             .then(response => {
-                // add function to add chat and chats
                 addChat(response.data.Id)
 
                 dispatch(setUser({"Id": response.data.Id,"Ime": name,"Email": email, "Slika": "./DefaultImage"}))
@@ -100,7 +97,6 @@ export default function Register() {
             .catch(error => {
                 // Handle errors
                 console.error(error);
-                // Perform any necessary error handling
             });
     }
 

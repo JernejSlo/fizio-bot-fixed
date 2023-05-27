@@ -25,7 +25,6 @@ export default function Login() {
                 id: id
             })
                 .then(response => {
-                    console.log(response.data)
                     if (response.data != null){
                         dispatch(setCurrentChat(response.data.messages))
                     }

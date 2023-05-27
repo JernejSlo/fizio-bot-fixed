@@ -10,7 +10,6 @@ const getCurrentChat = async (id,set,dispatch) => {
             id: id
         })
             .then(response => {
-                console.log(response.data)
                 if (response.data != null){
                     dispatch(set(response.data.messages))
                 }
@@ -30,7 +29,6 @@ const getDiagnosis = async (id) => {
             id: id
         })
             .then(response => {
-                console.log(response.data)
                 if (response.data != null){
                     return response.data.diagnoses
                 }
@@ -50,7 +48,6 @@ const getChats = async (id,set,setAll,dispatch) => {
             id: id
         })
             .then(response => {
-                console.log(response.data.chats)
                 if (response.data != null){
                     dispatch(setChats(response.data.chats))
                     getCurrentChat(response.data.chats[0].Id,setAll,dispatch)

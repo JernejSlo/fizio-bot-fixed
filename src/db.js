@@ -149,25 +149,14 @@ async function predict(array){
         'imam', 'nimam',
         'zdravila', 'počitek', 'toplo/mrzlo', 'nisem',]
 
-    console.log("original array", array)
     array =  await splitMultipleChoice(array)
-    console.log("split",array)
     let filteredArray = await removeNonDatasetElements(array, dataset);
-    console.log("filtered",filteredArray)
 
     let rejoinedArray = await rejoinMultipleChoice(filteredArray)
 
-    console.log("rejoined",rejoinedArray)
-
     let reorderedArray = await reorderArray(rejoinedArray)
 
-    console.log("reordered",reorderedArray)
-
-
-
     const result = classifierLoaded.classify(filteredArray);
-
-    console.log('Example 3:', result);
 
     return result
 }
@@ -191,7 +180,6 @@ const sha256 = (input) => {
 
 pool.createUser = async (name, email, password) => {
     let pass = sha256(password)
-    console.log(pass)
     return new Promise((resolve, reject) => {
         conn.query(
             'INSERT INTO uporabniki (Ime,Email, Geslo, Slika) VALUES (?,?,?,?)',
@@ -274,7 +262,6 @@ pool.changeDiagnosis = async (Id, diagnoza) => {
 app.post('/predict', async (req, res) => {
     const {array} = req.body;
     let prediction_ = await predict(array)
-    console.log(prediction_)
     res.status(200).json({message: 'Successfully predicted on the data', prediction: prediction_});
 });
 
@@ -360,7 +347,6 @@ app.post('/alterDiagnosis', (req, res) => {
     const { Id, Diagnoza } = req.body;
     pool.changeDiagnosis(Id,Diagnoza)
         .then(result => {
-            console.log(Id,result)
             res.status(200).json({ message: 'Diagnosis changed successfully.'});
         })
         .catch(error => {
