@@ -1,7 +1,7 @@
 import axios from "axios";
 import {setChats, setCurrentChat} from "./Slices/navSlice";
 
-let serverPort = 5000
+let serverPort = 5006
 
 const getCurrentChat = async (id,set,dispatch) => {
     try {
